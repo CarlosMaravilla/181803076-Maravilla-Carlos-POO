@@ -36,8 +36,7 @@
             <input type="hidden" name="respuesta" value="true" />
             <input type="submit" value="Regresar"/>
             </form>  
-        
-            
+                 
             <%}else{%>
             <form>
             <input type="number" name="numero" required/>

@@ -13,7 +13,7 @@
         conexion = DriverManager.getConnection("jdbc:mysql://localhost/tienda", "root","");
         stmt = conexion.createStatement();
         rs = stmt.executeQuery("SELECT productos.Id_producto, productos.Nombre_Producto, productos.Precio, productos.Descripcion, productos.Cantidad_Producto, ca_departamentos.departamento FROM productos JOIN ca_departamentos on productos.id_departamento = ca_departamentos.id_departamento");
-                
+              
         
     }catch(Exception e){
         out.println("Error: "+e);
@@ -38,6 +38,7 @@
                 margin-right: 50px;
                 }
         </style>
+        
     </head>
     <body>
         <h1 align="center"><font color="BlackDimgray">CRUD Productos De Una Tienda</font></h1><br><br>
@@ -64,5 +65,41 @@
         <td align="center" bgcolor="redgreenblack"><%out.println(rs.getString(6));%></td>
         </tr>
         <%}%>
+        </table>
+        <br><br>
+        
+        
+        <% 
+        
+        try{
+       
+        Class.forName("com.mysql.jdbc.Driver");
+        conexion = DriverManager.getConnection("jdbc:mysql://localhost/tienda", "root","");
+        stmt = conexion.createStatement();
+        rs = stmt.executeQuery("SELECT * from 	ca_departamentos");
+              
+        
+        }catch(Exception e){
+        out.println("Error: "+e);
+        }
+        %>
+        
+        <br><br>
+
+        
+       
+        <h2><font face="Arial">Tabla de Departamentos</font></h2>
+        <table style="width:100%">
+        <tr>
+        <th bgcolor="blue"><font color="WHITE">ID del Producto</font></th>
+        <th bgcolor="blue"><font color="WHITE">Nombre del Producto</font></th>    
+        </tr>
+        <tr>
+        <%while(rs.next()){%>
+        <td align="center" bgcolor="LIME"><%out.println(rs.getString(1));%></td>
+        <td align="center" bgcolor="Springgreen"><%out.println(rs.getString(2));%></td>
+        </tr>
+        <%}%>
+        </table>
     </body>
 </html>

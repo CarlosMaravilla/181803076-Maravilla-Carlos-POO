@@ -1,3 +1,4 @@
+  
 <%-- 
     Document   : index
     Created on : 3 jun. 2020, 20:30:21
@@ -5,21 +6,21 @@
 --%>
 <%@page import="java.sql.*"%>
 <%
+    try{
     Connection conexion=null;
     Statement stmt=null;
     ResultSet rs=null;
-    try{
+    
         Class.forName("com.mysql.jdbc.Driver");
         conexion = DriverManager.getConnection("jdbc:mysql://localhost/tienda", "root","");
         stmt = conexion.createStatement();
-        rs = stmt.executeQuery("SELECT productos.Id_producto, productos.Nombre_Producto, productos.Precio, productos.Descripcion, productos.Cantidad_Producto, ca_departamentos.departamento FROM productos JOIN ca_departamentos on productos.id_departamento = ca_departamentos.id_departamento");
+        rs = stmt.executeQuery("select * from productos");
+        
+        
               
         
-    }catch(Exception e){
-        out.println("Error: "+e);
-    }
+  
 %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -63,43 +64,42 @@
         <td align="center" bgcolor="Lightgreen"><%out.println(rs.getString(4));%></td>
         <td align="center" bgcolor="Seagreen"><font color="WHITE"><%out.println(rs.getString(5));%></font></td>
         <td align="center" bgcolor="redgreenblack"><%out.println(rs.getString(6));%></td>
+        <td align="center" bgcolor="redgreenblack"><%out.println(rs.getString(7));%></td>
+        
         </tr>
         <%}%>
         </table>
-        <br><br>
+        
+    <%}catch(SQLException e ){
+           
         
         
-        <% 
-        
-        try{
-       
-        Class.forName("com.mysql.jdbc.Driver");
-        conexion = DriverManager.getConnection("jdbc:mysql://localhost/tienda", "root","");
-        stmt = conexion.createStatement();
-        rs = stmt.executeQuery("SELECT * from 	ca_departamentos");
-              
-        
-        }catch(Exception e){
-        out.println("Error: "+e);
+        if(String.valueOf(e.getSQLState()).equalsIgnoreCase("42000")){
+    
+          out.println("Error SQL: la base de datos no existe");
+          
+        }else{
+            if(String.valueOf(e.getSQLState()).equalsIgnoreCase("42S02")){
+            out.println("Error SQL: la tabla no existe"); 
+            }else{
+                if(String.valueOf(e.getSQLState()).equalsIgnoreCase("28000")){
+                out.println("Error SQL: Acceso denegado para el usuario 'root' @ 'localhost' (usando la contraseña: YES)");
+                 }else{
+                     if(String.valueOf(e.getSQLState()).equalsIgnoreCase("08S01")){
+                     out.println("Error de enlace de comunicaciones El último paquete enviado con éxito al servidor fue hace 0 milisegundos. El controlador no ha recibido ningún paquete del servidor.");
+                     }else{
+                         if(String.valueOf(e.getSQLState()).equalsIgnoreCase("S1009")){
+                         out.println("Índice de columna fuera de rango, 7 > 6"); 
+                         }else{
+                         out.println(e.getSQLState());
+                         out.println("error aun no registrado "+e.getMessage());
+                         } 
+                     }
+                 }
+             }
         }
-        %>
-        
-        <br><br>
-
-        
+    }
+    %>    
        
-        <h2><font face="Arial">Tabla de Departamentos</font></h2>
-        <table style="width:100%">
-        <tr>
-        <th bgcolor="blue"><font color="WHITE">ID del Producto</font></th>
-        <th bgcolor="blue"><font color="WHITE">Nombre del Producto</font></th>    
-        </tr>
-        <tr>
-        <%while(rs.next()){%>
-        <td align="center" bgcolor="LIME"><%out.println(rs.getString(1));%></td>
-        <td align="center" bgcolor="Springgreen"><%out.println(rs.getString(2));%></td>
-        </tr>
-        <%}%>
-        </table>
     </body>
 </html>

@@ -10,8 +10,7 @@
     String actual="";
     int id;
     id=Integer.parseInt(request.getParameter("id"));
-    String password=request.getParameter("password");
-            
+    String password=request.getParameter("password");     
     boolean con =true; 
     String c1=request.getParameter("c1");
     String c2=request.getParameter("c2");
@@ -51,13 +50,11 @@ if(con==false){
         actual = rs.getString("password");
     
     if(password.equals(actual)){
-      
-   
-      out.print("son iguales");
+ 
       try{
             Class.forName("com.mysql.jdbc.Driver");
             conexion = DriverManager.getConnection("jdbc:mysql://localhost/usuarios", "root","");
-            stmt = conexion.prepareStatement("UPDATE usuario SET `password`=? WHERE `id usuario`=?");
+            stmt = conexion.prepareStatement("UPDATE usuario SET `password`=MD5(?) WHERE `id usuario`=?");
             stmt.setString(1, request.getParameter("c1"));
             stmt.setInt(2, Integer.parseInt(request.getParameter("id")));
             stmt.executeUpdate();

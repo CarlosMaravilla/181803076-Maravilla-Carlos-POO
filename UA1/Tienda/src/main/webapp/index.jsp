@@ -10,15 +10,10 @@
     Connection conexion=null;
     Statement stmt=null;
     ResultSet rs=null;
-    
         Class.forName("com.mysql.jdbc.Driver");
         conexion = DriverManager.getConnection("jdbc:mysql://localhost/tienda", "root","");
         stmt = conexion.createStatement();
         rs = stmt.executeQuery("select * from productos");
-        
-        
-              
-        
   
 %>
 <!DOCTYPE html>
@@ -64,20 +59,28 @@
         <td align="center" bgcolor="Lightgreen"><%out.println(rs.getString(4));%></td>
         <td align="center" bgcolor="Seagreen"><font color="WHITE"><%out.println(rs.getString(5));%></font></td>
         <td align="center" bgcolor="redgreenblack"><%out.println(rs.getString(6));%></td>
-        <td align="center" bgcolor="redgreenblack"><%out.println(rs.getString(7));%></td>
-        
         </tr>
         <%}%>
         </table>
-        
+        <br><br>
+        <h2><font face="Arial">Tabla de Departamentos</font></h2>
+        <table style="width:100%">
+        <%rs = stmt.executeQuery("select * from ca_departamentos");%>    
+        <tr>
+        <th bgcolor="blue"><font color="WHITE">ID del Departamento</font></th>
+        <th bgcolor="blue"><font color="WHITE">Departamento</font></th>
+        </tr>
+        <%while(rs.next()){%>
+        <tr>
+        <td align="center" bgcolor="LIME"><%out.println(rs.getString(1));%></td>
+        <td align="center" bgcolor="Springgreen"><%out.println(rs.getString(2));%></td>
+        </tr>
+        <%}%>
+        </table>    
+            
     <%}catch(SQLException e ){
-           
-        
-        
         if(String.valueOf(e.getSQLState()).equalsIgnoreCase("42000")){
-    
-          out.println("Error SQL: la base de datos no existe");
-          
+           out.println("Error SQL: la base de datos no existe");
         }else{
             if(String.valueOf(e.getSQLState()).equalsIgnoreCase("42S02")){
             out.println("Error SQL: la tabla no existe"); 

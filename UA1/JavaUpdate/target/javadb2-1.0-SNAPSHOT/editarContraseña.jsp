@@ -43,13 +43,13 @@ if(con==false){
         ResultSet rs = null;
         Class.forName("com.mysql.jdbc.Driver");
         conexion = DriverManager.getConnection("jdbc:mysql://localhost/usuarios", "root", "");
-        stmt = conexion.prepareStatement("SELECT * FROM `usuario` WHERE `id usuario`=?");
-        stmt.setInt(1, id);
+        stmt = conexion.prepareStatement("SELECT * FROM `usuario` WHERE `password`=MD5(?)");
+        stmt.setString(1,password);
         rs = stmt.executeQuery();
-        rs.next();
-        actual = rs.getString("password");
+       
     
-    if(password.equals(actual)){
+    if(rs.next()==true){
+    
  
       try{
             Class.forName("com.mysql.jdbc.Driver");
